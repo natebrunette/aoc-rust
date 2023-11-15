@@ -1,6 +1,4 @@
 use itertools::Itertools;
-use std::str::FromStr;
-use std::string::ParseError;
 
 type AssignmentRange = (usize, usize);
 type AssignmentPair = (AssignmentRange, AssignmentRange);
@@ -45,7 +43,7 @@ impl From<AssignmentPair> for Assignments {
     }
 }
 
-fn part1(input: Vec<String>) -> usize {
+pub fn part1(input: Vec<String>) -> usize {
     input
         .into_iter()
         .map_into::<Assignments>()
@@ -53,7 +51,7 @@ fn part1(input: Vec<String>) -> usize {
         .count()
 }
 
-fn part2(input: Vec<String>) -> usize {
+pub fn part2(input: Vec<String>) -> usize {
     input
         .into_iter()
         .map_into::<Assignments>()
@@ -64,29 +62,29 @@ fn part2(input: Vec<String>) -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::lib;
+    use crate::tests::parse_input;
 
     #[test]
     fn part1_sample_test() {
-        let input = lib::parse_input("aoc2022/res/day04_sample.txt");
+        let input = parse_input("aoc2022/res/day04_sample.txt");
         assert_eq!(part1(input), 2);
     }
 
     #[test]
     fn part1_test() {
-        let input = lib::parse_input("aoc2022/res/day04.txt");
+        let input = parse_input("aoc2022/res/day04.txt");
         assert_eq!(part1(input), 588);
     }
 
     #[test]
     fn part2_sample_test() {
-        let input = lib::parse_input("aoc2022/res/day04_sample.txt");
+        let input = parse_input("aoc2022/res/day04_sample.txt");
         assert_eq!(part2(input), 4);
     }
 
     #[test]
     fn part2_test() {
-        let input = lib::parse_input("aoc2022/res/day04.txt");
+        let input = parse_input("aoc2022/res/day04.txt");
         assert_eq!(part2(input), 911);
     }
 }

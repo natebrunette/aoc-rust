@@ -120,7 +120,7 @@ impl Round {
     }
 }
 
-fn part1(input: Vec<String>) -> usize {
+pub fn part1(input: Vec<String>) -> usize {
     input
         .iter()
         .map(|line| parse_move_line(line))
@@ -128,7 +128,7 @@ fn part1(input: Vec<String>) -> usize {
         .sum()
 }
 
-fn part2(input: Vec<String>) -> usize {
+pub fn part2(input: Vec<String>) -> usize {
     input
         .iter()
         .map(|line| parse_outcome_line(line))
@@ -155,29 +155,29 @@ fn parse_outcome_line(line: &String) -> Round {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::lib;
+    use crate::tests::parse_input;
 
     #[test]
     fn part1_sample_test() {
-        let input = lib::parse_input("aoc2022/res/day02_sample.txt");
+        let input = parse_input("aoc2022/res/day02_sample.txt");
         assert_eq!(part1(input), 15);
     }
 
     #[test]
     fn part1_test() {
-        let input = lib::parse_input("aoc2022/res/day02.txt");
+        let input = parse_input("aoc2022/res/day02.txt");
         assert_eq!(part1(input), 15632);
     }
 
     #[test]
     fn part2_sample_test() {
-        let input = lib::parse_input("aoc2022/res/day02_sample.txt");
+        let input = parse_input("aoc2022/res/day02_sample.txt");
         assert_eq!(part2(input), 12);
     }
 
     #[test]
     fn part2_test() {
-        let input = lib::parse_input("aoc2022/res/day02.txt");
+        let input = parse_input("aoc2022/res/day02.txt");
         assert_eq!(part2(input), 14416);
     }
 }

@@ -1,19 +1,19 @@
-use crate::lib;
+use crate::shared;
 use itertools::Itertools;
 
-fn part1(input: Vec<String>) -> usize {
-    lib::group_on_empty(&input)
+pub fn part1(input: Vec<String>) -> usize {
+    shared::group_on_empty(&input)
         .iter()
-        .map(|group| lib::vec_to_int(group))
+        .map(|group| shared::vec_to_int(group))
         .map(|vec| vec.iter().sum())
         .max()
         .unwrap()
 }
 
-fn part2(input: Vec<String>) -> usize {
-    lib::group_on_empty(&input)
+pub fn part2(input: Vec<String>) -> usize {
+    shared::group_on_empty(&input)
         .iter()
-        .map(|group| lib::vec_to_int(group))
+        .map(|group| shared::vec_to_int(group))
         .map(|vec| vec.iter().sum::<usize>())
         .sorted()
         .rev()
@@ -24,29 +24,29 @@ fn part2(input: Vec<String>) -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::lib;
+    use crate::tests::parse_input;
 
     #[test]
     fn part1_sample_test() {
-        let input = lib::parse_input("aoc2022/res/day01_sample.txt");
+        let input = parse_input("aoc2022/res/day01_sample.txt");
         assert_eq!(part1(input), 24000);
     }
 
     #[test]
     fn part1_test() {
-        let input = lib::parse_input("aoc2022/res/day01.txt");
+        let input = parse_input("aoc2022/res/day01.txt");
         assert_eq!(part1(input), 74394);
     }
 
     #[test]
     fn part2_sample_test() {
-        let input = lib::parse_input("aoc2022/res/day01_sample.txt");
+        let input = parse_input("aoc2022/res/day01_sample.txt");
         assert_eq!(part2(input), 45000);
     }
 
     #[test]
     fn part2_test() {
-        let input = lib::parse_input("aoc2022/res/day01.txt");
+        let input = parse_input("aoc2022/res/day01.txt");
         assert_eq!(part2(input), 212836);
     }
 }

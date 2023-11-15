@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use std::collections::HashSet;
 
-fn part1(input: Vec<String>) -> usize {
+pub fn part1(input: Vec<String>) -> usize {
     input
         .iter()
         .map(|line| line.split_at(line.len() / 2))
@@ -20,7 +20,7 @@ fn part1(input: Vec<String>) -> usize {
         .sum()
 }
 
-fn part2(input: Vec<String>) -> usize {
+pub fn part2(input: Vec<String>) -> usize {
     input
         .iter()
         .map(|line| HashSet::<char>::from_iter(line.chars()))
@@ -47,29 +47,29 @@ fn to_int(c: &char) -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::lib;
+    use crate::tests::parse_input;
 
     #[test]
     fn part1_sample_test() {
-        let input = lib::parse_input("aoc2022/res/day03_sample.txt");
+        let input = parse_input("aoc2022/res/day03_sample.txt");
         assert_eq!(part1(input), 157);
     }
 
     #[test]
     fn part1_test() {
-        let input = lib::parse_input("aoc2022/res/day03.txt");
+        let input = parse_input("aoc2022/res/day03.txt");
         assert_eq!(part1(input), 7428);
     }
 
     #[test]
     fn part2_sample_test() {
-        let input = lib::parse_input("aoc2022/res/day03_sample.txt");
+        let input = parse_input("aoc2022/res/day03_sample.txt");
         assert_eq!(part2(input), 70);
     }
 
     #[test]
     fn part2_test() {
-        let input = lib::parse_input("aoc2022/res/day03.txt");
+        let input = parse_input("aoc2022/res/day03.txt");
         assert_eq!(part2(input), 2650);
     }
 }
