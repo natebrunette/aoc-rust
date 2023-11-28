@@ -3,7 +3,7 @@ use chrono::{Datelike, Local};
 use clap::Parser;
 use reqwest::header::{HeaderMap, HeaderValue, COOKIE};
 use std::fs;
-use std::fs::File;
+use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::Path;
 
@@ -33,8 +33,23 @@ async fn create_challenge_files(year: Option<i32>, day: Option<i32>) -> Result<(
     let day_str = format!("{:02}", day);
 
     // Directory paths
-    let dir_path = format!("src/aoc{}", year);
+    let year_dir = format!("aoc{}", year);
+    let dir_path = format!("src/{}", year_dir);
     let res_path = format!("{}/res", dir_path);
+    let new_year = !Path::new(&dir_path).exists();
+
+    // if we're starting a new year, update the lib file
+    if new_year {
+        let lib_file = "src/lib.rs";
+        let lib_contents = fs::read_to_string(lib_file)?;
+        let new_contents = format!("{}\n{}", format!("pub mod {};", year_dir), lib_contents);
+        let mut file = OpenOptions::new()
+            .write(true)
+            .truncate(true)
+            .open(lib_file)?;
+
+        file.write_all(new_contents.as_bytes())?;
+    }
 
     // Create directories if they don't exist
     fs::create_dir_all(&dir_path)?;
