@@ -5,8 +5,8 @@ pub fn group_on_empty(input: &Vec<String>) -> Vec<Vec<String>> {
         .collect()
 }
 
-pub fn vec_to_int(vec: &Vec<String>) -> Vec<usize> {
+pub fn vec_to_int(vec: &Vec<String>) -> Vec<i32> {
     vec.iter()
-        .map(|string| string.parse::<usize>().unwrap())
+        .map(|string| string.parse::<i32>().unwrap())
         .collect()
 }

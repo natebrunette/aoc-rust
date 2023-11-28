@@ -11,8 +11,8 @@ enum Outcome {
 }
 
 impl Outcome {
-    fn value(&self) -> usize {
-        (self.clone() as usize) * 3
+    fn value(&self) -> i32 {
+        (self.clone() as i32) * 3
     }
 }
 
@@ -53,8 +53,8 @@ enum Move {
 }
 
 impl Move {
-    fn value(&self) -> usize {
-        (self.clone() as usize) + 1
+    fn value(&self) -> i32 {
+        (self.clone() as i32) + 1
     }
 }
 
@@ -115,12 +115,12 @@ impl Round {
         self.me.clone() - self.opponent.clone()
     }
 
-    fn score(&self) -> usize {
+    fn score(&self) -> i32 {
         self.me.value() + self.outcome().value()
     }
 }
 
-pub fn part1(input: Vec<String>) -> usize {
+pub fn part1(input: Vec<String>) -> i32 {
     input
         .iter()
         .map(|line| parse_move_line(line))
@@ -128,7 +128,7 @@ pub fn part1(input: Vec<String>) -> usize {
         .sum()
 }
 
-pub fn part2(input: Vec<String>) -> usize {
+pub fn part2(input: Vec<String>) -> i32 {
     input
         .iter()
         .map(|line| parse_outcome_line(line))

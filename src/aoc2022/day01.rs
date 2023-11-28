@@ -1,7 +1,7 @@
 use crate::shared;
 use itertools::Itertools;
 
-pub fn part1(input: Vec<String>) -> usize {
+pub fn part1(input: Vec<String>) -> i32 {
     shared::group_on_empty(&input)
         .iter()
         .map(|group| shared::vec_to_int(group))
@@ -10,11 +10,11 @@ pub fn part1(input: Vec<String>) -> usize {
         .unwrap()
 }
 
-pub fn part2(input: Vec<String>) -> usize {
+pub fn part2(input: Vec<String>) -> i32 {
     shared::group_on_empty(&input)
         .iter()
         .map(|group| shared::vec_to_int(group))
-        .map(|vec| vec.iter().sum::<usize>())
+        .map(|vec| vec.iter().sum::<i32>())
         .sorted()
         .rev()
         .take(3)

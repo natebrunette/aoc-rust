@@ -97,11 +97,11 @@ async fn fetch_input_data(cookie: &str, year: &str, day: i32) -> Result<String> 
 
 fn day_template(year: &str, day: &str) -> String {
     format!(
-        r#"pub fn part1(input: Vec<String>) -> usize {{
+        r#"pub fn part1(input: Vec<String>) -> i32 {{
     0
 }}
 
-pub fn part2(input: Vec<String>) -> usize {{
+pub fn part2(input: Vec<String>) -> i32 {{
     0
 }}
 

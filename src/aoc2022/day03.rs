@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use std::collections::HashSet;
 
-pub fn part1(input: Vec<String>) -> usize {
+pub fn part1(input: Vec<String>) -> i32 {
     input
         .iter()
         .map(|line| line.split_at(line.len() / 2))
@@ -20,7 +20,7 @@ pub fn part1(input: Vec<String>) -> usize {
         .sum()
 }
 
-pub fn part2(input: Vec<String>) -> usize {
+pub fn part2(input: Vec<String>) -> i32 {
     input
         .iter()
         .map(|line| HashSet::<char>::from_iter(line.chars()))
@@ -39,8 +39,8 @@ pub fn part2(input: Vec<String>) -> usize {
         .sum()
 }
 
-fn to_int(c: &char) -> usize {
-    let int = c.clone() as usize;
+fn to_int(c: &char) -> i32 {
+    let int = c.clone() as i32;
     return if int >= 97 { int - 96 } else { int - 38 };
 }
 

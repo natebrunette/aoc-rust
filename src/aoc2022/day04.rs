@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-type AssignmentRange = (usize, usize);
+type AssignmentRange = (i32, i32);
 type AssignmentPair = (AssignmentRange, AssignmentRange);
 
 struct Assignments {
@@ -24,7 +24,7 @@ impl From<String> for Assignments {
         line.split(",")
             .map(|part| {
                 part.split("-")
-                    .map(|num| num.parse::<usize>().unwrap())
+                    .map(|num| num.parse::<i32>().unwrap())
                     .collect_tuple::<AssignmentRange>()
                     .unwrap()
             })
@@ -43,20 +43,20 @@ impl From<AssignmentPair> for Assignments {
     }
 }
 
-pub fn part1(input: Vec<String>) -> usize {
+pub fn part1(input: Vec<String>) -> i32 {
     input
         .into_iter()
         .map_into::<Assignments>()
         .filter_map(|assignments| assignments.complete_overlap().then(|| assignments))
-        .count()
+        .count() as i32
 }
 
-pub fn part2(input: Vec<String>) -> usize {
+pub fn part2(input: Vec<String>) -> i32 {
     input
         .into_iter()
         .map_into::<Assignments>()
         .filter_map(|assignments| assignments.partial_overlap().then(|| assignments))
-        .count()
+        .count() as i32
 }
 
 #[cfg(test)]
