@@ -8,6 +8,7 @@ pub fn parse_input(path: &str) -> Vec<String> {
             string
                 .split("\n")
                 .map(|string| string.to_string())
+                .filter(|line| !line.is_empty())
                 .collect()
         })
         .expect("Could not parse input file")
