@@ -112,7 +112,9 @@ async fn fetch_input_data(cookie: &str, year: &str, day: i32) -> Result<String> 
 
 fn day_template(year: &str, day: &str) -> String {
     format!(
-        r#"pub fn part1(input: Vec<String>) -> i32 {{
+        r#"// {link}
+
+pub fn part1(input: Vec<String>) -> i32 {{
     0
 }}
 
@@ -150,6 +152,11 @@ mod tests {{
     }}
 }}
 "#,
+        link = format!(
+            "https://adventofcode.com/{}/day/{}",
+            year,
+            day.parse::<i32>().unwrap().to_string()
+        ),
         year = year,
         day = day
     )
