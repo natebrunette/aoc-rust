@@ -1,6 +1,7 @@
 // https://adventofcode.com/2023/day/5
 
-use itertools::Itertools;
+use crate::range::{Range, RangeExtensions};
+use std::collections::VecDeque;
 use std::str::FromStr;
 
 pub fn part1(input: String) -> u64 {
@@ -10,10 +11,54 @@ pub fn part1(input: String) -> u64 {
 }
 
 pub fn part2(input: String) -> u64 {
-    let mut almanac: Almanac = input.parse().unwrap();
+    let almanac: Almanac = input.parse().unwrap();
 
-    almanac.expand_seeds();
-    almanac.find_closest_location()
+    let seeds = almanac.get_seed_ranges();
+    let maps = vec![
+        &almanac.seed_to_soil,
+        &almanac.soil_to_fertilizer,
+        &almanac.fertilizer_to_water,
+        &almanac.water_to_light,
+        &almanac.light_to_temperature,
+        &almanac.temperature_to_humidity,
+        &almanac.humidity_to_location,
+    ];
+
+    let mut seeds_queue = VecDeque::from(seeds);
+    for map in maps.into_iter() {
+        let mut next_seed_ranges = vec![];
+        while let Some(range) = seeds_queue.pop_front() {
+            // there's no mapping required, propagate all ids
+            if !map.contains_range(&range) {
+                next_seed_ranges.push(range.clone());
+                continue;
+            }
+
+            for entry in map.elements.iter() {
+                // check if the seed range overlaps with any of the mapped ranges
+                if let Some(intersection) = range.intersection(&entry.source) {
+                    next_seed_ranges.push(entry.source_to_dest(&*intersection));
+
+                    // also grab parts of the range that do not overlap and re-add them as ranges for the map
+                    seeds_queue.extend(
+                        range
+                            .subtract(&entry.source)
+                            .iter()
+                            .map(|range| *range.clone())
+                            .collect::<Vec<Range<u64>>>(),
+                    );
+
+                    // since we've re-added the unmatched parts, we can stop checking this range
+                    break;
+                }
+            }
+        }
+
+        // the seeds queue is empty, we'll move on to the next map and fill it with the mapped seed ranges
+        seeds_queue.extend(next_seed_ranges);
+    }
+
+    seeds_queue.iter().map(|range| range.0.start).min().unwrap()
 }
 
 struct Almanac {
@@ -62,13 +107,11 @@ impl FromStr for Almanac {
 }
 
 impl Almanac {
-    fn expand_seeds(&mut self) {
-        self.seeds = self
-            .seeds
+    fn get_seed_ranges(&self) -> Vec<Range<u64>> {
+        self.seeds
             .chunks_exact(2)
-            .flat_map(|range| (range[0]..(range[0] + range[1])).collect::<Vec<u64>>())
-            .unique()
-            .collect();
+            .map(|range| Range(range[0]..(range[0] + range[1])))
+            .collect()
     }
 
     fn find_closest_location(&self) -> u64 {
@@ -131,34 +174,45 @@ impl Map {
     fn get(&self, key: u64) -> u64 {
         for element in self.elements.iter() {
             if element.contains(key) {
-                let offset = key - element.source;
-                return element.dest + offset;
+                let offset = key - element.source.0.start.clone();
+                return element.dest.0.start.clone() + offset;
             }
         }
 
         key
     }
+
+    fn contains_range(&self, range: &Range<u64>) -> bool {
+        self.elements
+            .iter()
+            .any(|entry| range.intersection(&entry.source).is_some())
+    }
 }
 
 struct MapEntry {
-    source: u64,
-    dest: u64,
-    increment: u64,
+    source: Range<u64>,
+    dest: Range<u64>,
 }
 
 impl From<(u64, u64, u64)> for MapEntry {
     fn from(value: (u64, u64, u64)) -> Self {
         MapEntry {
-            source: value.0,
-            dest: value.1,
-            increment: value.2,
+            source: Range(value.0..(value.0 + value.2)),
+            dest: Range(value.1..(value.1 + value.2)),
         }
     }
 }
 
 impl MapEntry {
+    fn source_to_dest(&self, source: &Range<u64>) -> Range<u64> {
+        let offset = source.0.start - self.source.0.start;
+        let length = source.0.end - source.0.start;
+
+        Range((self.dest.0.start + offset)..(self.dest.0.start + offset + length))
+    }
+
     fn contains(&self, num: u64) -> bool {
-        num >= self.source && num < self.source + self.increment
+        self.source.0.contains(&num)
     }
 }
 
