@@ -2,16 +2,16 @@ use std::env::current_dir;
 use std::fs;
 use std::path::PathBuf;
 
+pub fn get_input(path: &str) -> String {
+    fs::read_to_string(get_path(path)).expect("Could not read input file")
+}
+
 pub fn parse_input(path: &str) -> Vec<String> {
-    fs::read_to_string(get_path(path))
-        .map(|string| {
-            string
-                .split("\n")
-                .map(|string| string.to_string())
-                .filter(|line| !line.is_empty())
-                .collect()
-        })
-        .expect("Could not parse input file")
+    get_input(path)
+        .lines()
+        .filter(|&line| !line.is_empty())
+        .map(|str| str.to_string())
+        .collect()
 }
 
 fn get_path(path: &str) -> PathBuf {
