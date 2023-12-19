@@ -1,6 +1,16 @@
 #[derive(Clone)]
 pub struct Range<T>(pub std::ops::Range<T>);
 
+impl<T: Ord> From<(T, T)> for Range<T> {
+    fn from(value: (T, T)) -> Self {
+        if value.0 < value.1 {
+            Range(value.0..value.1)
+        } else {
+            Range(value.1..value.0)
+        }
+    }
+}
+
 pub trait RangeExtensions {
     fn intersection(&self, other: &Self) -> Option<Box<Self>>;
     fn subtract(&self, other: &Self) -> Vec<Box<Self>>;
